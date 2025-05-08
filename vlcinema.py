@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-
-from subprocess import check_output
+import subprocess
 
 class VLCinema():
 	
@@ -27,7 +26,7 @@ class VLCinema():
 		start_button.pack()
 
 	def get_local_ip(self):
-		return check_output(
+		return subprocess.check_output(
 			'hostname -I',
 			shell = True
 		).decode(
@@ -43,6 +42,24 @@ class VLCinema():
 		
 	def run_cvlc(self):
 		print('Run CVLC...')
+		# Required arguments:
+		# - Host
+		# - Port
+		# - Password
+		args = [
+			# Console VLC
+			'cvlc',
+			# Fullscreen
+			'-f',
+			# with HTTP-Interface
+			'-I', 'http',
+			'--http-host', '127.0.0.1',
+			'--http-port', '3000',
+			'--http-password', '12345678',
+		]
+		# Optional arguments
+		# - ???
+		subprocess.run(args)
 		
 	def set_title(self, title):
 		self.root.title(title)
