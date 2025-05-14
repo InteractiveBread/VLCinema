@@ -9,21 +9,58 @@ class VLCinema():
 		self.root.title('VLCinema')
 		self.root.geometry('600x800+50+100')
 		
+		# Test Message
 		message = ttk.Label(
 			self.root,
 			text = 'My IP is '+self.get_local_ip()
 		)
 		message.pack()
 		
+		# Host IP (Label + Entry)
+		ttk.Label(
+			self.root,
+			text = 'Host IP:'
+		).pack()
+		self.host_ip_entry = ttk.Entry(
+			self.root
+		)
+		self.host_ip_entry.insert(0,'127.0.0.1')
+		self.host_ip_entry.pack()
+		
+		# HTTP Port (Label + Entry)
+		ttk.Label(
+			self.root,
+			text = 'Http port:'
+		).pack()
+		self.http_port_entry = ttk.Entry(
+			self.root
+		)
+		self.http_port_entry.insert(0,'3000')
+		self.http_port_entry.pack()
+		
+		# HTTP Password (Label + Entry)
+		ttk.Label(
+			self.root,
+			text = 'Http password:'
+		).pack()
+		self.http_pass_entry = ttk.Entry(
+			self.root
+		)
+		self.http_pass_entry.insert(0,'12345678')
+		self.http_pass_entry.pack()
+		
+		# Start & Stop Buttons
 		start_button = ttk.Button(
 			self.root,
-			text = 'Start'
+			text = 'Start',
+			command = self.run_cvlc
+		).pack()
+		stop_button = ttk.Button(
+			self.root,
+			text = 'Stop'
 		)
-		start_button.bind(
-			'<Button>',
-			self.on_start_button_click
-		)
-		start_button.pack()
+		stop_button.state(['disabled'])
+		stop_button.pack()
 
 	def get_local_ip(self):
 		return subprocess.check_output(
@@ -32,10 +69,6 @@ class VLCinema():
 		).decode(
 			'ascii'
 		).split(' ')[0]
-		
-	def on_start_button_click(self, event):
-		if event.num == 1:
-			self.run_cvlc()
 	
 	def run(self):
 		self.root.mainloop()
@@ -53,13 +86,19 @@ class VLCinema():
 			'-f',
 			# with HTTP-Interface
 			'-I', 'http',
-			'--http-host', '127.0.0.1',
-			'--http-port', '3000',
-			'--http-password', '12345678',
+			'--http-host', self.host_ip_entry.get(),
+			'--http-port', self.http_port_entry.get(),
+			'--http-password', self.http_pass_entry.get(),
+			# ~ '--no-playlist-autostart',
+			# ~ '--no-video-title-show',
 		]
 		# Optional arguments
 		# - ???
-		subprocess.run(args)
+		
+		# ~ args.append(vlc_playlist_file)
+		# ~ subprocess.run(args)
+		
+		print(' '.join(args))
 		
 	def set_title(self, title):
 		self.root.title(title)

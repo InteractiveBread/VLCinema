@@ -1,6 +1,7 @@
 1. Make it work
-  [ ] choose host IP
-  [ ] choose http port
+  [x] choose host IP
+  [x] choose http port
+  [x] choose http password
   [ ] choose playlist
 2. Make it nice
   [ ] choose cvlc-options (autoplay, loop, etc.)
