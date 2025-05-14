@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from tkinter import filedialog
 import subprocess
 
 class VLCinema():
@@ -49,6 +50,18 @@ class VLCinema():
 		self.http_pass_entry.insert(0,'12345678')
 		self.http_pass_entry.pack()
 		
+		# Playlist selection
+		self.playlist_label = ttk.Label(
+			self.root
+		)
+		self.playlist_label.pack()
+		playlist_button = ttk.Button(
+			self.root,
+			text = 'Open Playlist',
+			command = self.select_playlist
+		)
+		playlist_button.pack()
+		
 		# Start & Stop Buttons
 		start_button = ttk.Button(
 			self.root,
@@ -95,10 +108,24 @@ class VLCinema():
 		# Optional arguments
 		# - ???
 		
-		# ~ args.append(vlc_playlist_file)
+		args.append(self.playlist_path)
 		# ~ subprocess.run(args)
 		
 		print(' '.join(args))
+	
+	def select_playlist(self):
+		self.playlist_path = filedialog.askopenfilename(
+			title = 'Open a playlist file',
+			initialdir = '/',
+			filetypes = (
+				('M3U', '*.m3u'),
+				('XSPF', '*.xspf'),
+				('All files', '*.*')
+			)
+		)
+		self.playlist_label.config(
+			text = self.playlist_path
+		)
 		
 	def set_title(self, title):
 		self.root.title(title)
